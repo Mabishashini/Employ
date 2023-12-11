@@ -1,0 +1,44 @@
+.forms{
+  display:flex;
+  flex-direction: column;
+  width:80%;
+  height:100vh;
+  justify-content: center;
+  
+}
+.form__label{
+  display: flex;
+  flex-direction: column;
+  margin:1% 0;
+
+}
+.form__input{
+  margin:0.5% 0;
+  border:none;
+  outline:none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  transition: box-shadow 0.3s ease;
+  padding:7px 10px;
+
+}
+
+
+.form__input:focus {
+  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+
+button{
+  border:none;
+  outline:none;
+  background-color: goldenrod;
+  color:white;
+  margin:7px 0;
+  padding:7px 7px;
+}
+
+.emp{
+  text-align: center;
+  margin: 30px;
+}

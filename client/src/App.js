@@ -12,10 +12,10 @@ function App() {
         <Route path="/" element={
           <div class ="container">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6 left">
                 <Form/>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 right">
                 <EmpInfo/>
               </div>
             </div>
