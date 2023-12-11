@@ -65,10 +65,12 @@ app.get("/Emp", (req, res) => {
 app.put("/update/:id", (req, res) => {
   const id = req.params.id;
   const q =
-    "UPDATE employees SET `name` = ? , `dept` =? , `desig` =?, `dob` =?, `salary` =?, `add` =?, `age` =?WHERE id = ?";
+    "UPDATE employees SET `name` = ? , `dept` =? , `desig` =?, `dob` =?, `salary` =?, `add` =?, `age` =?, `doj`=?,`exp`=? WHERE id = ?";
   const dob = req.body.dob;
  
   const age = calculateAge(dob);
+  const doj = req.body.doj;
+  const experience = calculateAge(doj);
   const values = [
     req.body.id,
     req.body.name,
@@ -78,7 +80,8 @@ app.put("/update/:id", (req, res) => {
     req.body.salary,
     req.body.add,
     age,
-    
+    req.body.doj,
+    experience
   ];
 
   db.query(q, [...values, id], (err, data) => {
@@ -102,6 +105,19 @@ app.delete("/deleteEmp/:id", (req, res) => {
     return res.json("Employee has been deleted successfully");
   });
 });
+
+
+app.get("/updateEmp/:id",(req,res) => {
+    const id = req.params.id;
+    const q = "SELECT * FROM employees WHERE id = ?"
+
+    db.query(q,[id],(err,data) => {
+        if(err){
+            return res.json(err)
+        }
+        return res.json(data)
+    })
+})
 
 app.listen("8800", () => {
   console.log("API Working !");
