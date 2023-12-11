@@ -12,7 +12,7 @@ const EmpInfo = () => {
         const fetchData = async () => {
             try{
                 const response =await  axios.get("http://localhost:8800/Emp");
-                const formattedData = response.data.map((employee) => ({...employee, dob: formatDob(employee.dob)}))
+                const formattedData = response.data.map((employee) => ({...employee, dob: formatDob(employee.dob), doj:formatDob(employee.doj)}))
                 setEmps(formattedData);
             }
             catch(err){
@@ -21,6 +21,8 @@ const EmpInfo = () => {
         }
         fetchData()
     }, [])
+
+    
 
     const formatDob =(dob) =>{
         const date = new Date(dob)
@@ -54,6 +56,8 @@ const EmpInfo = () => {
                 <td>Salary</td>
                 <td>Date-Of-Birth</td>
                 <td>Age</td>
+                <td>Date-Of-Joining</td>
+                <td>Experience in Years</td>
                 <td>Address</td>
                 <td>Delete</td>
                 <td>Update</td>
@@ -69,6 +73,8 @@ const EmpInfo = () => {
                         <td>{employee.salary}</td>
                         <td>{employee.dob}</td>
                         <td>{employee.age}</td>
+                        <td>{employee.doj}</td>
+                        <td>{employee.exp}</td>
                         <td>{employee.add}</td>
                         <td><DeleteOutlineIcon className='delete' onClick={()=>handleDelete(employee.id)}/></td>
                         <td> <Link to={`update/${employee.id}`}><CreateIcon className='update' /></Link></td>

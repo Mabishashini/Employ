@@ -12,9 +12,11 @@ const Form = () => {
         desig:"",
         salary:null,
         dob: null,
-      
+        doj :null,
         add:""
     })
+
+    
 
     const navigate = useNavigate();
 
@@ -46,6 +48,7 @@ const Form = () => {
         <label className='form__label'> Enter your Designation: <input type="text" onChange={handleChange} name="desig"className='form__input'/></label>
         <label className='form__label'> Enter your Salary: <input type="number" onChange={handleChange} name="salary"className='form__input'/></label>
         <label className='form__label'> Enter your Date-of-Birth: <input type="date"onChange={handleChange} name="dob"className='form__input'/></label>
+        <label className='form__label'> Enter your Date-Of-Joining: <input type="date"onChange={handleChange} name="doj"className='form__input'/></label>
         <label className='form__label'> Enter your Address: <input type="text"onChange={handleChange} name="add"className='form__input'/></label>
         <button onClick = {handleClick}>Add Employee</button>
     </div>
