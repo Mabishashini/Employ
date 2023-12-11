@@ -6,6 +6,7 @@ import {useNavigate, useLocation} from "react-router-dom"
 const Update = () => {
 
     const [emp, setEmp] = useState({})
+    
     const location = useLocation();
     const empId = location.pathname.split("/")[2]
 
@@ -28,11 +29,12 @@ const formatDob =(dob) =>{
     return `${year}-${month <10 ? `0${month}`:month}-${day < 10 ? `0${day}`:day}`
 }
 
-console.log(emp)
+
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setEmp((prev) => ({...prev, [e.target.name] : e.target.value}))
+        console.log(emp)
     }
     
 

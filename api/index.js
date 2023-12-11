@@ -72,7 +72,7 @@ app.put("/update/:id", (req, res) => {
   const doj = req.body.doj;
   const experience = calculateAge(doj);
   const values = [
-    req.body.id,
+   
     req.body.name,
     req.body.dept,
     req.body.desig,
@@ -83,6 +83,7 @@ app.put("/update/:id", (req, res) => {
     req.body.doj,
     experience
   ];
+  console.log(values)
 
   db.query(q, [...values, id], (err, data) => {
     if (err) {
@@ -115,6 +116,7 @@ app.get("/updateEmp/:id",(req,res) => {
         if(err){
             return res.json(err)
         }
+        
         return res.json(data)
     })
 })
