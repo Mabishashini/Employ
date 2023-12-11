@@ -1,6 +1,9 @@
 import React from 'react'
 import {useState, useEffect} from "react"
 import axios from "axios";
+import {Link} from "react-router-dom"
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import CreateIcon from '@mui/icons-material/Create';
 
 const EmpInfo = () => {
     const [emps, setEmps] = useState([])
@@ -29,8 +32,17 @@ const EmpInfo = () => {
     }
     console.log(emps)
 
+    const handleDelete =async (id) => {
+        try {
+            await axios.delete("http://localhost:8800/deleteEmp/"+id)
+            window.location.reload()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
   return (
-    <div >
+    <div className='empInfo'>
         <h3 className='emp'>Employee Table</h3>
         <table className='table table-bordered '>
             <thead>
@@ -41,7 +53,10 @@ const EmpInfo = () => {
                 <td>Designation</td>
                 <td>Salary</td>
                 <td>Date-Of-Birth</td>
+                <td>Age</td>
                 <td>Address</td>
+                <td>Delete</td>
+                <td>Update</td>
                </tr>
             </thead>
             <tbody>
@@ -53,11 +68,15 @@ const EmpInfo = () => {
                         <td>{employee.desig}</td>
                         <td>{employee.salary}</td>
                         <td>{employee.dob}</td>
+                        <td>{employee.age}</td>
                         <td>{employee.add}</td>
+                        <td><DeleteOutlineIcon className='delete' onClick={()=>handleDelete(employee.id)}/></td>
+                        <td> <Link to={`update/${employee.id}`}><CreateIcon className='update' /></Link></td>
                     </tr>
                 ))}
             </tbody>
         </table>
+        <button className='addButton1' ><Link to="/addEmployee" className='addButton mx-auto'>Add Employee</Link></button>
     </div>
   )
 }
