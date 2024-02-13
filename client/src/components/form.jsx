@@ -33,7 +33,7 @@ const Form = () => {
             
         }
         catch(err){
-            console.log(err.message);
+            console.log(err.response.data);
         }
     }
 
@@ -42,7 +42,7 @@ const Form = () => {
   return (
     <div className='form forms container'>
         <h3 className='heading emp'>Employee form</h3>
-        <label className='form__label'> Enter your Emp Id: <input type="number" onChange={handleChange} name="id" className='form__input'/></label>
+        <label className='form__label'> Enter your Register Number: <input type="number" onChange={handleChange} name="id" className='form__input'/></label>
         <label className='form__label'> Enter your Name: <input type="text" onChange={handleChange} name="name"className='form__input'/></label>
         <label className='form__label'> Enter your Department: <input type="text" onChange={handleChange} name="dept"className='form__input'/></label>
         <label className='form__label'> Enter your Designation: <input type="text" onChange={handleChange} name="desig"className='form__input'/></label>
