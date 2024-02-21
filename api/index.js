@@ -20,6 +20,8 @@ app.post("/addEmp", (req, res) => {
     "INSERT INTO employees (`id`,`name`,`dept`, `desig`, `dob`, `salary`, `add`,`age`,`doj`,`exp`) VALUES(?)";
   const dob = req.body.dob;
   const age = calculateAge(dob);
+  
+  
   const doj = req.body.doj;
   const experience = calculateAge(doj);
 
@@ -121,6 +123,6 @@ app.get("/updateEmp/:id",(req,res) => {
     })
 })
 
-app.listen("8800", () => {
+app.listen("8000", () => {
   console.log("API Working !");
 });

@@ -11,7 +11,7 @@ const EmpInfo = () => {
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const response =await  axios.get("http://localhost:8800/Emp");
+                const response =await  axios.get("http://localhost:8000/Emp");
                 const formattedData = response.data.map((employee) => ({...employee, dob: formatDob(employee.dob), doj:formatDob(employee.doj)}))
                 setEmps(formattedData);
             }
@@ -36,7 +36,7 @@ const EmpInfo = () => {
 
     const handleDelete =async (id) => {
         try {
-            await axios.delete("http://localhost:8800/deleteEmp/"+id)
+            await axios.delete("http://localhost:8000/deleteEmp/"+id)
             window.location.reload()
         } catch (error) {
             console.log(error)
@@ -45,11 +45,11 @@ const EmpInfo = () => {
 
   return (
     <div className='empInfo'>
-        <h3 className='emp'>Employee Table</h3>
+        <h3 className='emp'>Employee Details</h3>
         <table className='table table-bordered '>
             <thead>
                <tr>
-                <td>Emp_Id</td>
+                <td>Emp Id</td>
                 <td>Name</td>
                 <td>Department</td>
                 <td>Designation</td>
@@ -57,8 +57,7 @@ const EmpInfo = () => {
                 <td>Date-Of-Birth</td>
                 <td>Age</td>
                 <td>Date-Of-Joining</td>
-                <td>Experience in Years</td>
-                <td>Address</td>
+                <td>Gender</td>
                 <td>Delete</td>
                 <td>Update</td>
                </tr>
@@ -74,7 +73,6 @@ const EmpInfo = () => {
                         <td>{employee.dob}</td>
                         <td>{employee.age}</td>
                         <td>{employee.doj}</td>
-                        <td>{employee.exp}</td>
                         <td>{employee.add}</td>
                         <td><DeleteOutlineIcon className='delete' onClick={()=>handleDelete(employee.id)}/></td>
                         <td> <Link to={`update/${employee.id}`}><CreateIcon className='update' /></Link></td>

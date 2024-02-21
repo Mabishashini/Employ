@@ -63,4 +63,7 @@ button{
 .delete{
   color:darkred;
 }
+.hidden{
+  display:none;
+}
 
