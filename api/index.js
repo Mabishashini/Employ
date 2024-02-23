@@ -37,7 +37,6 @@ app.post("/addEmp", (req, res) => {
     req.body.doj,
     experience,
   ];
-  console.log(values);
   db.query(q, [values], (err, data) => {
     if (err) {
       return res.json(err);
@@ -85,20 +84,17 @@ app.put("/update/:id", (req, res) => {
     req.body.doj,
     experience
   ];
-  console.log(values)
 
   db.query(q, [...values, id], (err, data) => {
     if (err) {
       res.json(err);
     } else {
       res.json("Book has been updated successfully");
-      console.log(data);
     }
   });
 });
 
 app.delete("/deleteEmp/:id", (req, res) => {
-  console.log(req);
   const id = req.params.id;
   const q = "DELETE FROM employees WHERE id = ?";
   db.query(q, [id], (err, data) => {

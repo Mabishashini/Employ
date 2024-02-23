@@ -1,11 +1,11 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Update = () => {
   const [emp, setEmp] = useState({});
-
+  const [errors, setErrors] = useState({});
+  
   const location = useLocation();
   const empId = location.pathname.split("/")[2];
 
@@ -38,24 +38,55 @@ const Update = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setEmp((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(emp);
+    const { name, value } = e.target;
+    setEmp((prev) => ({ ...prev, [name]: value }));
+    
+    // Validate and set errors
+    let error = "";
+    if (value.trim() === "") {
+      error = "Please fill this field";
+    } else if (name === "salary" && (isNaN(value) || value.length > 8 || Number(value) < 0)) {
+      error = "Salary must be a non-negative number with at most 8 digits";
+    } else if (name === "dob" && getAge(value) < 18) {
+      error = "Employee must be at least 18 years old";
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+  };
+
+  const getAge = (dob) => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   };
 
   const handleClick = async (e) => {
     e.preventDefault();
+
+    // Check if there are any errors
+    const hasErrors = Object.values(errors).some((error) => error !== "");
+    if (hasErrors) {
+      console.log("Please fill in all required fields correctly");
+      return;
+    }
 
     try {
       const response = await axios.put(
         "http://localhost:8000/update/" + empId,
         emp
       );
+      console.log("clicked");
       console.log(response);
       navigate("/");
     } catch (err) {
       console.log(err.message);
     }
   };
+  
   return (
     <div className="form forms container">
       <h3 className="heading emp">Employee Update form</h3>
@@ -68,6 +99,7 @@ const Update = () => {
           className="form__input"
           value={emp.name}
         />
+        {errors.name && <span className="error">{errors.name}</span>}
       </label>
       <label className="form__label">
         Department:
@@ -76,12 +108,14 @@ const Update = () => {
           onChange={handleChange}
           required
           className="form__input"
+          value={emp.dept}
         >
-          <option value="">{emp.dept}</option>
+          <option value=""></option>
           <option value="CSE">CSE</option>
           <option value="IT">IT</option>
           <option value="ECE">ECE</option>
         </select>
+        {errors.dept && <span className="error">{errors.dept}</span>}
       </label>
       <label className="form__label">
         Designation:
@@ -92,6 +126,7 @@ const Update = () => {
           className="form__input"
           value={emp.desig}
         />
+        {errors.desig && <span className="error">{errors.desig}</span>}
       </label>
       <label className="form__label">
         Salary:
@@ -102,6 +137,7 @@ const Update = () => {
           className="form__input"
           value={emp.salary}
         />
+        {errors.salary && <span className="error">{errors.salary}</span>}
       </label>
       <label className="form__label">
         Date-of-Birth:
@@ -112,6 +148,7 @@ const Update = () => {
           className="form__input"
           value={emp.dob}
         />
+        {errors.dob && <span className="error">{errors.dob}</span>}
       </label>
       <label className="form__label">
         Date-Of-Joining:
@@ -122,6 +159,7 @@ const Update = () => {
           className="form__input"
           value={emp.doj}
         />
+        {errors.doj && <span className="error">{errors.doj}</span>}
       </label>
       <label className="form__label">
         Gender:
@@ -158,6 +196,7 @@ const Update = () => {
           />
           Other
         </label>
+        {errors.add && <span className="error">{errors.add}</span>}
       </label>
       <button onClick={handleClick}>Update Employee</button>
     </div>

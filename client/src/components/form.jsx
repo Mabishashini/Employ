@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -15,34 +14,73 @@ const Form = () => {
     add: "",
   });
 
+  const [errors, setErrors] = useState({
+    id: "",
+    name: "",
+    dept: "",
+    desig: "",
+    salary: "",
+    dob: "",
+    doj: "",
+    add: ""
+  });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    // Remove error when user starts typing
+    const newErrors = { ...errors };
+    newErrors[e.target.name] = "";
+    setErrors(newErrors);
+
+    if (e.target.name === "dob") {
+      const dobDate = new Date(e.target.value);
+      const ageDiff = new Date().getFullYear() - dobDate.getFullYear();
+      if (ageDiff < 18) {
+        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "Age should be at least 18 years old" }));
+        return;
+      }
+    }
+
+    // Validate salary for negative value and length
+    if (e.target.name === "salary") {
+      const value = e.target.value;
+      if (value < 0) {
+        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "Salary cannot be negative" }));
+      } else if (String(value).length > 8) {
+        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "Salary should be at most 8 digits" }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "" }));
+      }
+    }
+
     setEmp((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
   const handleClick = async (e) => {
     e.preventDefault();
 
-    const today = new Date();
-    const dobDate = new Date(emp.dob);
-    const ageDiff = today.getFullYear() - dobDate.getFullYear();
-    const dobValid = dobDate <= today && ageDiff >= 18;
-  
-    // Validate salary
-    const salaryValid = String(emp.salary).length <= 8;
-  
-    if (!dobValid) {
-      alert("Date of birth must be in the past and age should be at least 18 years old.");
-      return;
-    }
-  
-    if (!salaryValid) {
-      alert("Salary should be within 8 digits.");
+    // Check for empty fields
+    let formIsValid = true;
+    const newErrors = { ...errors };
+
+    Object.keys(emp).forEach((key) => {
+      if (!emp[key]) {
+        formIsValid = false;
+        newErrors[key] = "Please fill this field";
+      } else {
+        newErrors[key] = "";
+      }
+    });
+
+    setErrors(newErrors);
+
+    if (!formIsValid) {
       return;
     }
 
     try {
-      const response = axios.post("http://localhost:8000/addEmp", emp);
+      const response = await axios.post("http://localhost:8000/addEmp", emp);
       console.log(response);
       navigate("/");
     } catch (err) {
@@ -52,7 +90,7 @@ const Form = () => {
 
   return (
     <div className="form forms container">
-      <h3 className="heading emp">Employee Registeration form</h3>
+      <h3 className="heading emp">Employee Registration form</h3>
       <label className="form__label">
         Enter your Employee Id:
         <input
@@ -61,6 +99,7 @@ const Form = () => {
           name="id"
           className="form__input"
         />
+        {errors.id && <span className="error">{errors.id}</span>}
       </label>
       <label className="form__label">
         Enter your Name:
@@ -70,6 +109,7 @@ const Form = () => {
           name="name"
           className="form__input"
         />
+        {errors.name && <span className="error">{errors.name}</span>}
       </label>
       <label className="form__label">
         Enter your Department:
@@ -84,6 +124,7 @@ const Form = () => {
           <option value="IT">IT</option>
           <option value="ECE">ECE</option>
         </select>
+        {errors.dept && <span className="error">{errors.dept}</span>}
       </label>
       <label className="form__label">
         Enter your Designation:
@@ -93,6 +134,7 @@ const Form = () => {
           name="desig"
           className="form__input"
         />
+        {errors.desig && <span className="error">{errors.desig}</span>}
       </label>
       <label className="form__label">
         Enter your Salary:
@@ -102,6 +144,7 @@ const Form = () => {
           name="salary"
           className="form__input"
         />
+        {errors.salary && <span className="error">{errors.salary}</span>}
       </label>
       <label className="form__label">
         Enter your Date-of-Birth:
@@ -110,7 +153,9 @@ const Form = () => {
           onChange={handleChange}
           name="dob"
           className="form__input"
+          max={new Date().toISOString().split("T")[0]} // Set max attribute to today's date
         />
+        {errors.dob && <span className="error">{errors.dob}</span>}
       </label>
       <label className="form__label">
         Enter your Date-Of-Joining:
@@ -119,7 +164,9 @@ const Form = () => {
           onChange={handleChange}
           name="doj"
           className="form__input"
+          max={new Date().toISOString().split("T")[0]} // Set max attribute to today's date
         />
+        {errors.doj && <span className="error">{errors.doj}</span>}
       </label>
       <label className="form__label">
         Select your Gender:
@@ -156,6 +203,7 @@ const Form = () => {
           />
           Other
         </label>
+        {errors.add && <span className="error">{errors.add}</span>}
       </label>
       <button onClick={handleClick}>Add Employee</button>
     </div>

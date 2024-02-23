@@ -67,3 +67,31 @@ button{
   display:none;
 }
 
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  transition: opacity 0.3s ease;
+}
+
+.error:not(:empty) {
+  opacity: 1;
+}
+.empInfo__head{
+  font-weight: 600;
+}.filterContainer {
+  margin-bottom: 20px;
+}
+
+.filterDropdown {
+  margin-right: 10px;
+  padding:10px 20px;
+
+}
+
+.filterInput {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width:50%;
+}
