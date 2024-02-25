@@ -1,14 +1,20 @@
 import mysql from "mysql2";
 import express from "express";
 import cors from "cors";
+import fs from "fs"
+
+const ca = [fs.readFileSync("./DigiCertGlobalRootCA.crt.pem")];
+const port = process.env.port || 8000;
 
 const app = express();
-
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
+  host: "mabi-server.mysql.database.azure.com",
+  user: "Mabishashini",
   password: "TaylorSwift@1989",
   database: "screening",
+  ssl :{
+    ca: ca
+  }
 });
 
 app.use(cors());
@@ -119,6 +125,6 @@ app.get("/updateEmp/:id",(req,res) => {
     })
 })
 
-app.listen("8000", () => {
+app.listen(port, () => {
   console.log("API Working !");
 });
