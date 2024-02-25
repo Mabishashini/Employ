@@ -87,129 +87,139 @@ const Form = () => {
       navigate("/");
     } catch (err) {
       console.log(err.response.data);
-      setErrorMessage(err.response.data.error); // Set the error message received from the server
+      if (err.response.data.error.includes("duplicate key")) {
+        setErrorMessage("Employee ID already exists"); // Set the error message if employee ID already exists
+      } else {
+        setErrorMessage(err.response.data.error); // Set the error message received from the server
+      }
     }
   };
 
   return (
-    <div className="form forms container">
-      <h3 className="heading emp">Employee Registration form</h3>
-      {errorMessage && <div className="error">{errorMessage}</div>} {/* Display error message if present */}
-      <label className="form__label">
-        Enter your Employee Id:
-        <input
-          type="number"
-          onChange={handleChange}
-          name="id"
-          className="form__input"
-        />
-        {errors.id && <span className="error">{errors.id}</span>}
-      </label>
-      <label className="form__label">
-        Enter your Name:
-        <input
-          type="text"
-          onChange={handleChange}
-          name="name"
-          className="form__input"
-        />
-        {errors.name && <span className="error">{errors.name}</span>}
-      </label>
-      <label className="form__label">
-        Enter your Department:
-        <select
-          name="dept"
-          onChange={handleChange}
-          required
-          className="form__input"
-        >
-          <option value=""></option>
-          <option value="CSE">CSE</option>
-          <option value="IT">IT</option>
-          <option value="ECE">ECE</option>
-        </select>
-        {errors.dept && <span className="error">{errors.dept}</span>}
-      </label>
-      <label className="form__label">
-        Enter your Designation:
-        <input
-          type="text"
-          onChange={handleChange}
-          name="desig"
-          className="form__input"
-        />
-        {errors.desig && <span className="error">{errors.desig}</span>}
-      </label>
-      <label className="form__label">
-        Enter your Salary:
-        <input
-          type="number"
-          onChange={handleChange}
-          name="salary"
-          className="form__input"
-        />
-        {errors.salary && <span className="error">{errors.salary}</span>}
-      </label>
-      <label className="form__label">
-        Enter your Date-of-Birth:
-        <input
-          type="date"
-          onChange={handleChange}
-          name="dob"
-          className="form__input"
-          max={new Date().toISOString().split("T")[0]} // Set max attribute to today's date
-        />
-        {errors.dob && <span className="error">{errors.dob}</span>}
-      </label>
-      <label className="form__label">
-        Enter your Date-Of-Joining:
-        <input
-          type="date"
-          onChange={handleChange}
-          name="doj"
-          className="form__input"
-          max={new Date().toISOString().split("T")[0]} // Set max attribute to today's date
-        />
-        {errors.doj && <span className="error">{errors.doj}</span>}
-      </label>
-      <label className="form__label">
-        Select your Gender:
-        <label>
+    <div>
+      {errorMessage && (
+        <div className="custom-alert" onClick={() => setErrorMessage("")}>
+          {errorMessage}
+        </div>
+      )}
+      <div className="form forms container">
+        <h3 className="heading emp">Employee Registration form</h3>
+        <label className="form__label">
+          Enter your Employee Id:
           <input
-            type="radio"
-            name="add"
-            value="male"
-            checked={emp.add === "male"}
+            type="number"
             onChange={handleChange}
+            name="id"
             className="form__input"
           />
-          Male
+          {errors.id && <span className="error">{errors.id}</span>}
         </label>
-        <label>
+        <label className="form__label">
+          Enter your Name:
           <input
-            type="radio"
-            name="add"
-            value="female"
-            checked={emp.add === "female"}
+            type="text"
             onChange={handleChange}
+            name="name"
             className="form__input"
           />
-          Female
+          {errors.name && <span className="error">{errors.name}</span>}
         </label>
-        <label>
-          <input
-            type="radio"
-            name="add"
-            value="other"
-            checked={emp.add === "other"}
+        <label className="form__label">
+          Enter your Department:
+          <select
+            name="dept"
             onChange={handleChange}
+            required
+            className="form__input"
+          >
+            <option value=""></option>
+            <option value="CSE">CSE</option>
+            <option value="IT">IT</option>
+            <option value="ECE">ECE</option>
+          </select>
+          {errors.dept && <span className="error">{errors.dept}</span>}
+        </label>
+        <label className="form__label">
+          Enter your Designation:
+          <input
+            type="text"
+            onChange={handleChange}
+            name="desig"
             className="form__input"
           />
-          Other
+          {errors.desig && <span className="error">{errors.desig}</span>}
         </label>
-        {errors.add && <span className="error">{errors.add}</span>}
-      </label>
-      <button onClick={handleClick}>Add Employee</button>
+        <label className="form__label">
+          Enter your Salary:
+          <input
+            type="number"
+            onChange={handleChange}
+            name="salary"
+            className="form__input"
+          />
+          {errors.salary && <span className="error">{errors.salary}</span>}
+        </label>
+        <label className="form__label">
+          Enter your Date-of-Birth:
+          <input
+            type="date"
+            onChange={handleChange}
+            name="dob"
+            className="form__input"
+            max={new Date().toISOString().split("T")[0]} // Set max attribute to today's date
+          />
+          {errors.dob && <span className="error">{errors.dob}</span>}
+        </label>
+        <label className="form__label">
+          Enter your Date-Of-Joining:
+          <input
+            type="date"
+            onChange={handleChange}
+            name="doj"
+            className="form__input"
+            max={new Date().toISOString().split("T")[0]} // Set max attribute to today's date
+          />
+          {errors.doj && <span className="error">{errors.doj}</span>}
+        </label>
+        <label className="form__label">
+          Select your Gender:
+          <label>
+            <input
+              type="radio"
+              name="add"
+              value="male"
+              checked={emp.add === "male"}
+              onChange={handleChange}
+              className="form__input"
+            />
+            Male
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="add"
+              value="female"
+              checked={emp.add === "female"}
+              onChange={handleChange}
+              className="form__input"
+            />
+            Female
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="add"
+              value="other"
+              checked={emp.add === "other"}
+              onChange={handleChange}
+              className="form__input"
+            />
+            Other
+          </label>
+          {errors.add && <span className="error">{errors.add}</span>}
+        </label>
+        <button onClick={handleClick}>Add Employee</button>
+      </div>
     </div>
   );
 };
