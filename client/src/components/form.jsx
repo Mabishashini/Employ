@@ -25,6 +25,8 @@ const Form = () => {
     add: ""
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -85,12 +87,14 @@ const Form = () => {
       navigate("/");
     } catch (err) {
       console.log(err.response.data);
+      setErrorMessage(err.response.data.error); // Set the error message received from the server
     }
   };
 
   return (
     <div className="form forms container">
       <h3 className="heading emp">Employee Registration form</h3>
+      {errorMessage && <div className="error">{errorMessage}</div>} {/* Display error message if present */}
       <label className="form__label">
         Enter your Employee Id:
         <input

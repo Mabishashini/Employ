@@ -24,32 +24,43 @@ app.use(cors({
 app.use(express.json());
 
 app.post("/addEmp", (req, res) => {
-  const q =
-    "INSERT INTO employees (`id`,`name`,`dept`, `desig`, `dob`, `salary`, `add`,`age`,`doj`,`exp`) VALUES(?)";
-  const dob = req.body.dob;
-  const age = calculateAge(dob);
-  
-  
-  const doj = req.body.doj;
-  const experience = calculateAge(doj);
-
-  const values = [
-    req.body.id,
-    req.body.name,
-    req.body.dept,
-    req.body.desig,
-    req.body.dob,
-    req.body.salary,
-    req.body.add,
-    age,
-    req.body.doj,
-    experience,
-  ];
-  db.query(q, [values], (err, data) => {
-    if (err) {
-      return res.json(err);
+  const id = req.body.id;
+  // Check if an employee with the given ID already exists
+  const checkQuery = "SELECT * FROM employees WHERE id = ?";
+  db.query(checkQuery, [id], (checkErr, checkResult) => {
+    if (checkErr) {
+      return res.status(500).json({ error: "An error occurred while checking employee ID." });
     }
-    return res.json("Employee has been successfully added");
+    if (checkResult.length > 0) {
+      return res.status(400).json({ error: "Employee with the same ID already exists." });
+    }
+    // Proceed with inserting the new employee if no employee with the same ID exists
+    const q =
+      "INSERT INTO employees (`id`,`name`,`dept`, `desig`, `dob`, `salary`, `add`,`age`,`doj`,`exp`) VALUES(?)";
+    const dob = req.body.dob;
+    const age = calculateAge(dob);
+
+    const doj = req.body.doj;
+    const experience = calculateAge(doj);
+
+    const values = [
+      req.body.id,
+      req.body.name,
+      req.body.dept,
+      req.body.desig,
+      req.body.dob,
+      req.body.salary,
+      req.body.add,
+      age,
+      req.body.doj,
+      experience,
+    ];
+    db.query(q, [values], (err, data) => {
+      if (err) {
+        return res.status(500).json({ error: "An error occurred while adding the employee." });
+      }
+      return res.json("Employee has been successfully added");
+    });
   });
 });
 
