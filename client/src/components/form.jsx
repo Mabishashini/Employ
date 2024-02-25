@@ -80,7 +80,7 @@ const Form = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/addEmp", emp);
+      const response = await axios.post("https://employee-register-nine.vercel.app/addEmp", emp);
       console.log(response);
       navigate("/");
     } catch (err) {
