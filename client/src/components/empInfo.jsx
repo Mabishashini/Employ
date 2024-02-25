@@ -17,7 +17,7 @@ const EmpInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://employee-register-nine.vercel.app/Emp');
+        const response = await axios.get('https://employeeregister.onrender.com/Emp');
         const formattedData = response.data.map((employee) => ({
           ...employee,
           dob: formatDob(employee.dob),
@@ -43,7 +43,7 @@ const EmpInfo = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://employee-register-nine.vercel.app/deleteEmp/${id}`);
+      await axios.delete(`https://employeeregister.onrender.com/deleteEmp/${id}`);
       window.location.reload();
     } catch (error) {
       console.log(error);

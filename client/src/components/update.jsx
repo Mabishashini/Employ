@@ -12,7 +12,7 @@ const Update = () => {
   useEffect(() => {
     const fetch = async () => {
       const response = await axios.get(
-        "https://employee-register-nine.vercel.app/updateEmp/" + empId
+        "https://employeeregister.onrender.com/updateEmp/" + empId
       );
       const formattedData = response.data.map((employee) => ({
         ...employee,
@@ -76,7 +76,7 @@ const Update = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8000/update/" + empId,
+        "https://employeeregister.onrender.com/update/" + empId,
         emp
       );
       console.log("clicked");

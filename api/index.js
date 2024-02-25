@@ -16,13 +16,10 @@ const db = mysql.createConnection({
     ca: ca
   }
 });
-const allowedOrigins = ["https://advanced-library-manangement.vercel.app"];
 
-const corsOptions = {
-  origin: allowedOrigins,
-};
-
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: ['https://employee-register-nine.vercel.app', 'http://localhost:3000']
+}));
 
 app.use(express.json());
 
