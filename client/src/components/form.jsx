@@ -22,7 +22,7 @@ const Form = () => {
     salary: "",
     dob: "",
     doj: "",
-    add: ""
+    add: "",
   });
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,7 +39,10 @@ const Form = () => {
       const dobDate = new Date(e.target.value);
       const ageDiff = new Date().getFullYear() - dobDate.getFullYear();
       if (ageDiff < 18) {
-        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "Age should be at least 18 years old" }));
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [e.target.name]: "Age should be at least 18 years old",
+        }));
         return;
       }
     }
@@ -48,9 +51,15 @@ const Form = () => {
     if (e.target.name === "salary") {
       const value = e.target.value;
       if (value < 0) {
-        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "Salary cannot be negative" }));
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [e.target.name]: "Salary cannot be negative",
+        }));
       } else if (String(value).length > 8) {
-        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "Salary should be at most 8 digits" }));
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [e.target.name]: "Salary should be at most 8 digits",
+        }));
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "" }));
       }
@@ -82,7 +91,10 @@ const Form = () => {
     }
 
     try {
-      const response = await axios.post("https://employeeregister.onrender.com/addEmp", emp);
+      const response = await axios.post(
+        "https://employeeregister.onrender.com/addEmp",
+        emp
+      );
       console.log(response);
       navigate("/");
     } catch (err) {
@@ -218,7 +230,12 @@ const Form = () => {
           </label>
           {errors.add && <span className="error">{errors.add}</span>}
         </label>
-        <button onClick={handleClick}>Add Employee</button>
+        <button
+          onClick={handleClick}
+          disabled={Object.values(errors).some((error) => error !== "")}
+        >
+          Add Employee
+        </button>
       </div>
     </div>
   );

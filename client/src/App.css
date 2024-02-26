@@ -144,3 +144,8 @@ button{
 .custom-alert.close {
   display: none; /* Hide the alert when it's closed */
 }
+
+button:disabled {
+  background-color: rgba(218, 165, 32, 0.5); /* Adjust opacity as needed */
+  cursor: not-allowed;
+}
